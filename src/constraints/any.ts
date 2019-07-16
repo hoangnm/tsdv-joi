@@ -1,4 +1,4 @@
-import { lazy, Reference, Schema, ValidationErrorFunction, ValidationOptions, WhenOptions } from 'joi';
+import { lazy, Schema, ValidationErrorFunction, ValidationOptions, AnySchema } from '@hapi/joi';
 import { constraintDecorator, typeConstraintDecorator, TypedPropertyDecorator } from '../core';
 
 type AllowedPropertyTypes = unknown;
@@ -22,8 +22,8 @@ export function AnySchema(schemaBuilder?: (schema: Schema) => Schema): TypedProp
 /**
  * Returns a new type that is the result of adding the rules of one type to another.
  */
-export function Concat(schema: Schema): TypedPropertyDecorator<AllowedPropertyTypes> {
-    return constraintDecorator<AllowedPropertyTypes>((existingSchema: Schema) => {
+export function Concat(schema: AnySchema): TypedPropertyDecorator<AllowedPropertyTypes> {
+    return constraintDecorator<AllowedPropertyTypes>((existingSchema: AnySchema) => {
         return existingSchema.concat(schema);
     });
 }
@@ -58,7 +58,7 @@ export function Empty(schema: any): TypedPropertyDecorator<AllowedPropertyTypes>
 
 export function Error(err: Error | ValidationErrorFunction): TypedPropertyDecorator<AllowedPropertyTypes> {
     return constraintDecorator<AllowedPropertyTypes>((schema: Schema) => {
-        return schema.error!(err);
+        return schema.error(err);
     });
 }
 
@@ -213,11 +213,11 @@ export const Equal = Valid;
 /**
  * Converts the type into an alternatives type where the conditions are merged into the type definition.
  */
-export function When<TWhen>(
-    ref: string | Reference,
-    options: WhenOptions<TWhen>,
-): TypedPropertyDecorator<AllowedPropertyTypes> {
-    return constraintDecorator<AllowedPropertyTypes>((schema: Schema) => {
-        return schema.when<TWhen>(<any>ref, options);
-    });
-}
+// export function When<TWhen>(
+//     ref: string | Reference,
+//     options: WhenOptions<TWhen>,
+// ): TypedPropertyDecorator<AllowedPropertyTypes> {
+//     return constraintDecorator<AllowedPropertyTypes>((schema: Schema) => {
+//         return schema.when<TWhen>(<any>ref, options);
+//     });
+// }

@@ -1,5 +1,5 @@
 import { Joi, getJoiSchema, AnyClass } from './core';
-import { ObjectSchema, ValidationOptions } from 'joi';
+import { ObjectSchema, ValidationOptions } from '@hapi/joi';
 import { ValidationResult } from './ValidationResult';
 
 export class Validator {
